@@ -13,3 +13,6 @@ print b >= a
 print "\n"
 print a <= b
 print "\n"
+
+let x
+print x
