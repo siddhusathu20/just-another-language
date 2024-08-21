@@ -1,0 +1,10 @@
+print "Enter your name: "
+input name
+println "Your name is " + name
+print "Enter your age: "
+input age
+print "In 2 years, you will be: "
+println numof age + 2
+
+println "5" + (strof 3)
+println numof "7" + 5.5

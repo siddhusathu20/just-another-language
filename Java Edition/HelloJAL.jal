@@ -1,0 +1,19 @@
+print "hello"
+println 7 / 2 * 4 - 2
+
+let a = 3
+let b = 5
+
+println a + b
+println a > b
+println b >= a
+println a <= b
+
+let x
+println x
+
+x = a * b
+println x
+
+print "This is a
+multiline string!"
