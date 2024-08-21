@@ -13,7 +13,7 @@ public enum TokenType {
 
     AND, OR,
 
-    LET, PRINT, IF, ELSE, FOR, WHILE,
+    LET, PRINT, IF, ELSE, THEN, FOR, WHILE,
     TRUE, FALSE, NONE, DEF, RETURN,
 
     EOL, EOF

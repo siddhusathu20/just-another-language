@@ -33,29 +33,66 @@ public class Parser {
         Expression value = null;
         if (next(TokenType.EQ))
             value = parseExpression();
-        consume(TokenType.EOL, "Expected end of line after variable declaration");
+        checkEOL();
         return new Statement.LetStmt(name, value);
     }
 
     Statement parseStatement() {
+        if (next(TokenType.IF)) return parseIfStmt();
         if (next(TokenType.PRINT)) return parsePrintStmt();
+        if (next(TokenType.L_BRACE)) return new Statement.Block(parseBlock());
         return parseExprStmt();
+    }
+
+    List<Statement> parseBlock() {
+        List<Statement> statements = new ArrayList<>();
+        while (!check(TokenType.R_BRACE) && !atEnd()) {
+            statements.add(parseDeclaration());
+        }
+        if (prev().type != TokenType.R_BRACE)
+            consume(TokenType.R_BRACE, "Expected closing brace }");
+        checkEOL();
+        return statements;
+    }
+
+    Statement parseIfStmt() {
+        Expression condition = parseExpression();
+        consume(TokenType.THEN, "Expected 'then' after 'if'");
+        Statement thenBranch = parseStatement();
+        Statement elseBranch = null;
+        if (next(TokenType.ELSE))
+            elseBranch = parseStatement();
+        return new Statement.IfStmt(condition, thenBranch, elseBranch);
     }
 
     Statement parsePrintStmt() {
         Expression value = parseExpression();
-        consume(TokenType.EOL, "Expected end of line after value");
+        checkEOL();
         return new Statement.PrintStmt(value);
     }
 
     Statement parseExprStmt() {
         Expression value = parseExpression();
-        consume(TokenType.EOL, "Expected end of line after expression");
+        checkEOL();
         return new Statement.ExprStmt(value);
     }
 
     Expression parseExpression() {
-        return parseEquality();
+        return parseAssignment();
+    }
+
+    Expression parseAssignment() {
+        Expression expr = parseEquality();
+        if (next(TokenType.EQ)) {
+            Token eq = prev();
+            Expression value = parseAssignment();
+            if (expr instanceof Expression.Variable) {
+                Token name = ((Expression.Variable) expr).name;
+                return new Expression.Assignment(name, value);
+            }
+            error(eq, "Invalid assignment target");
+        }
+        return expr;
     }
 
     Expression parseEquality() {
@@ -146,13 +183,33 @@ public class Parser {
         return false;
     }
 
+    void checkEOL() {
+        if (check(TokenType.EOL)) {
+            advance();
+            return;
+        }
+        if (check(TokenType.R_BRACE)) {
+            advance();
+            return;
+        }
+        if (check(TokenType.EOF)) {
+            advance();
+            return;
+        }
+        if (prev().type == TokenType.R_BRACE) return;
+        throw error(peek(), "Expected end of line or closing brace");
+    }
+
     Token advance() {
         if (!atEnd()) current++;
         return prev();
     }
 
     boolean check(TokenType type) {
-        if (atEnd()) return false;
+        if (atEnd()) {
+            if (type != TokenType.EOL) return false;
+            else return true;
+        }
         return peek().type == type;
     }
 

@@ -15,6 +15,19 @@ public class Evaluator implements Expression.Visitor<Object>, Statement.Visitor<
         }
     }
 
+    public Void visit(Statement.Block stmt) {
+        execBlock(stmt.statements, new Environment(env));
+        return null;
+    }
+
+    public Void visit(Statement.IfStmt stmt) {
+        if (isTrue(eval(stmt.condition)))
+            exec(stmt.thenBranch);
+        else
+            exec(stmt.elseBranch);
+        return null;
+    }
+
     public Void visit(Statement.PrintStmt stmt) {
         Object value = eval(stmt.expr);
         System.out.print(stringCast(value));
@@ -32,6 +45,12 @@ public class Evaluator implements Expression.Visitor<Object>, Statement.Visitor<
     public Void visit(Statement.ExprStmt stmt) {
         eval(stmt.expr);
         return null;
+    }
+
+    public Object visit(Expression.Assignment expr) {
+        Object value = eval(expr.value);
+        env.assign(expr.name, value);
+        return value;
     }
 
     public Object visit(Expression.Variable expr) {
@@ -107,6 +126,17 @@ public class Evaluator implements Expression.Visitor<Object>, Statement.Visitor<
 
     void exec(Statement stmt) {
         stmt.accept(this);
+    }
+
+    void execBlock(List<Statement> statements, Environment env) {
+        Environment outer = this.env;
+        try {
+            this.env = env;
+            for (Statement stmt : statements)
+                exec(stmt);
+        } finally {
+            this.env = outer;
+        }
     }
 
     boolean isTrue(Object object) {

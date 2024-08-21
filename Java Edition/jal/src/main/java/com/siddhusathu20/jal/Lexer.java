@@ -21,6 +21,7 @@ public class Lexer {
         keywords.put("none", TokenType.NONE);
         keywords.put("def", TokenType.DEF);
         keywords.put("return", TokenType.RETURN);
+        keywords.put("then", TokenType.THEN);
     }
     final String src;
     final List<Token> tokens = new ArrayList<>();
@@ -94,7 +95,8 @@ public class Lexer {
                 addToken(next('=') ? TokenType.GT_EQ : TokenType.GT, null);
                 break;
             case '\n':
-                if (tokens.get(tokens.size() - 1).type != TokenType.EOL)
+                if (tokens.get(tokens.size() - 1).type != TokenType.EOL
+                && tokens.get(tokens.size() - 1).type != TokenType.L_BRACE)
                     addToken(TokenType.EOL, null);
                 line++;
                 break;
@@ -159,6 +161,8 @@ public class Lexer {
         }
         if (atEnd()) {
             Main.error(line, "String not terminated (missing \" - punctuation is important!)");
+            current++;
+            return;
         }
         current++; // For closing quotes
         String str = src.substring(start + 1, current - 1); // Exclude quotes

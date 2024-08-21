@@ -7,9 +7,25 @@ abstract class Expression {
         R visit(Group expr);
         R visit(Literal expr);
         R visit(Variable expr);
+        R visit(Assignment expr);
     }
 
     abstract<R> R accept(Visitor<R> visitor);
+
+    static class Assignment extends Expression {
+        final Token name;
+        final Expression value;
+
+        Assignment(Token name, Expression value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visit(this);
+        }
+    }
 
     static class Variable extends Expression {
         final Token name;

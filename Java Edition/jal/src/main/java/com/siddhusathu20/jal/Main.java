@@ -33,7 +33,8 @@ public class Main {
     }
 
     static void error(int line, String msg) {
-        System.err.println("Error at line " + line + ": " + msg);
+        if (msg != null)
+            System.err.println("Error at line " + line + ": " + msg);
         errored = true;
     }
 
