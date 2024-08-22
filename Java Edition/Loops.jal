@@ -1,0 +1,21 @@
+let a = 0
+while a < 5 do {
+    println "hello!"
+    a = a + 1
+}
+for (let i = 0; i < 7; i = i + 1) {
+    println i
+}
+while true do {
+    print "Enter exit to exit: "
+    input string
+    if string == "exit" then break
+    else print a
+}
+for (let z = 0; z < 99; z = z + 2) {
+    if z > 9 then {
+        println "broken"
+        break
+    }
+}
+println "over"
