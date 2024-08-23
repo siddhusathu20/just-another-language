@@ -1,8 +1,0 @@
-let name = input("Enter your name: ")
-println("Your name is " + name)
-let age = numof input("Enter your age: ")
-print("In 2 years, you will be: ")
-println(age + 2)
-
-println("5" + (strof 3))
-println(numof "7" + 5.5)
