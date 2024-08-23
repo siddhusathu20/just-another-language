@@ -1,8 +1,0 @@
-def my_function(a, b) {
-    print("hello ")
-    println(a + b)
-}
-
-println(strof time())
-my_function(2, 3)
-my_function(100, 7)
