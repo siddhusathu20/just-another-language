@@ -1,0 +1,13 @@
+def makeCounter() {
+    let num = 0
+    def count() {
+        num = num + 1
+        println(num)
+    }
+    return count
+}
+
+let counter = makeCounter()
+counter()
+counter()
+counter()
