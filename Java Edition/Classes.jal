@@ -1,0 +1,25 @@
+class TestCls {
+    def constructor(num1, num2) {
+        self.num2 = num1
+        self.num1 = num2
+    }
+
+    def my_method(x) {
+        println(self)
+        return x + 2
+    }
+
+    def say_hello() {
+        println(self.hello)
+    }
+}
+
+println(TestCls)
+let inst = TestCls(2, 3)
+println(inst)
+println(inst.num1 + inst.num2)
+println(inst.my_method(5))
+inst.hello = "hi"
+println(inst.hello)
+inst.hello = "AAA"
+inst.say_hello()
