@@ -1,0 +1,8 @@
+def fibonacci(n) {
+    if n <= 1 then return n
+    return fibonacci(n - 2) + fibonacci(n - 1)
+}
+
+let terms = numof input("Enter no. of terms: ")
+for (let i = 0; i < terms; i = i + 1)
+    println(fibonacci(i))
