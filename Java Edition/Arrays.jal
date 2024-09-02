@@ -1,0 +1,9 @@
+let arr = [1, 2, 3, 4, 5, "abc", none]
+println(arr)
+println(arr[2])
+println(arr[5])
+println(arr[6])
+arr[2] = 7
+println(arr[2])
+arr = arr + [8, 9]
+println(arr)

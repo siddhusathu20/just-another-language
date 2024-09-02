@@ -1,0 +1,8 @@
+def myfunc() {
+    let a = 3
+    println(a)
+}
+
+let a = 0
+myfunc()
+println(a)
